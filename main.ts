@@ -19,17 +19,36 @@ export default class NewFileNamePlugin extends Plugin {
 
 		// Configure a callback on the create event which only runs after the vault has loaded
 		this.app.workspace.onLayoutReady(() => {
+			// When creating a new TFile override the basename with the configured filename
 			this.registerEvent(this.app.vault.on('create', file => {
 				var filename = this.settings.defaultFilename;
 				if (filename.length == 0) {
 					filename = uuidv4();
 				}
 				if (file instanceof TFile) {
-					
+            		file.basename = this.getLowestNonColidingFilename(filename);
 				}
-				console.log(filename);
 			}));  
 		});
+	}
+
+	private getLowestNonColidingFilename(filename: string) {		
+		// get all the filenames that contain our desired filename as a substring
+		const files = this.app.vault.getMarkdownFiles();
+		const potentially_coliding_files = files.filter((file) => file.basename.includes(filename));
+		const potentially_coliding_filenames = new Set(potentially_coliding_files.map((file) => file.basename));
+		// iterate through potential filenames until we find one that doesn't already exist
+		// this should require at most potentially_coliding_filenames.length + 1 attempts
+		for (let i = 0; i < potentially_coliding_filenames.size + 1; i++) {
+			var file_name_to_attempt = filename;
+			if (i > 0) {
+				file_name_to_attempt = `${filename} ${i}`; 
+			}
+			if (!potentially_coliding_filenames.has(file_name_to_attempt)) {
+				return file_name_to_attempt;
+			}
+		}
+		throw new Error("Encountered Logic Mistake When Trying To Create New File");
 	}
 
 	onunload() {
