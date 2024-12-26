@@ -78,10 +78,10 @@ class NewFIleNameSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName('Default Filename')
+			.setName('Default filename')
 			.setDesc('Filename to create new notes with. (Leave blank to generate a UUID).')
 			.addText(text => text
-				.setPlaceholder('New Filename')
+				.setPlaceholder('New filename')
 				.setValue(this.plugin.settings.defaultFilename)
 				.onChange(async (value) => {
 					this.plugin.settings.defaultFilename = value;
