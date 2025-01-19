@@ -19,6 +19,20 @@ async function getPackageName() {
   return packageJson.name;
 }
 
+async function copyFilesToBuildDir(buildDir, files) {
+  for (const file of files) {
+    const sourcePath = path.resolve(process.cwd(), file);
+    const destinationPath = path.join(buildDir, file);
+
+    try {
+      await fs.copyFile(sourcePath, destinationPath);
+      console.log(`Arquivo copiado: ${file}`);
+    } catch (err) {
+      console.warn(`Erro ao copiar ${file}:`, err.message);
+    }
+  }
+}
+
 async function main() {
   const packageName = await getPackageName();
   const buildDir = path.resolve(process.cwd(), "build", packageName);
@@ -60,10 +74,9 @@ async function main() {
   if (prod) {
     await context.rebuild();
 
-    // Copiar o arquivo manifest para a pasta de build
-    const manifestPath = path.resolve(process.cwd(), "manifest.json");
-    const destinationManifest = path.join(buildDir, "manifest.json");
-    await fs.copyFile(manifestPath, destinationManifest);
+    // Copiar arquivos adicionais para a pasta de build
+    const filesToCopy = ["manifest.json", "README.md", "LICENSE", "styles.css"];
+    await copyFilesToBuildDir(buildDir, filesToCopy);
 
     console.log(`Build concluído em: ${buildDir}`);
     process.exit(0);
