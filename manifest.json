@@ -1,6 +1,6 @@
 {
-	"id": "obsidian-new-filename",
-	"name": "New Filename",
+	"id": "custom-new-filename",
+	"name": "Custom New Filename",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Customize the default filename for new notes, with unique and date-based options.",
