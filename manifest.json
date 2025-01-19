@@ -1,10 +1,10 @@
 {
-	"id": "new-file-name",
+	"id": "obsidian-new-filename",
 	"name": "New Filename",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Change the default filename used for new notes",
-	"author": "Amin Sennour",
-	"authorUrl": "https://aminsennour.com",
+	"description": "Customize the default filename for new notes, with unique and date-based options.",
+	"author": "Carlos Gabriel Godri",
+	"authorUrl": "https://github.com/godrix/obsidian-new-filename",
 	"isDesktopOnly": false
 }

@@ -1,12 +1,11 @@
 import { App, Plugin, PluginSettingTab, Setting, TFile } from 'obsidian';
-import {v4 as uuidv4} from 'uuid';
 
 interface NewFilenameSettings {
 	defaultFilename: string;
 }
 
 const DEFAULT_SETTINGS: NewFilenameSettings = {
-	defaultFilename: 'Untitled'
+	defaultFilename: 'Untitled',
 }
 
 export default class NewFileNamePlugin extends Plugin {
@@ -23,16 +22,26 @@ export default class NewFileNamePlugin extends Plugin {
 			this.registerEvent(this.app.vault.on('create', file => {
 				let filename = this.settings.defaultFilename;
 				if (filename.length == 0) {
-					filename = uuidv4();
+					const date = this.getCurrentDate()
+					filename = this.getLowestNonColidingFilename(date)
 				}
 				if (file instanceof TFile) {
 					file.basename = this.getLowestNonColidingFilename(filename);
 				}
-			}));  
+			}));
 		});
 	}
 
-	private getLowestNonColidingFilename(filename: string) {		
+	private getCurrentDate() {
+		const now = new Date();
+		const year = now.getFullYear();
+		const month = String(now.getMonth() + 1).padStart(2, '0');
+		const day = String(now.getDate()).padStart(2, '0');
+
+		return `${year}-${month}-${day}`;
+	}
+
+	private getLowestNonColidingFilename(filename: string) {
 		// get all the filenames that contain our desired filename as a substring
 		const files = this.app.vault.getMarkdownFiles();
 		const potentially_coliding_files = files.filter((file) => file.basename.includes(filename));
@@ -42,7 +51,7 @@ export default class NewFileNamePlugin extends Plugin {
 		for (let i = 0; i < potentially_coliding_filenames.size + 1; i++) {
 			let file_name_to_attempt = filename;
 			if (i > 0) {
-				file_name_to_attempt = `${filename} ${i}`; 
+				file_name_to_attempt = `${filename} ${i}`;
 			}
 			if (!potentially_coliding_filenames.has(file_name_to_attempt)) {
 				return file_name_to_attempt;
@@ -73,13 +82,13 @@ class NewFIleNameSettingTab extends PluginSettingTab {
 	}
 
 	display(): void {
-		const {containerEl} = this;
+		const { containerEl } = this;
 
 		containerEl.empty();
 
 		new Setting(containerEl)
 			.setName('Default filename')
-			.setDesc('Filename to create new notes with. (Leave blank to generate a UUID).')
+			.setDesc('Filename to create new notes with. (Leave blank to generate YYYY-MM-DD).')
 			.addText(text => text
 				.setPlaceholder('New filename')
 				.setValue(this.plugin.settings.defaultFilename)

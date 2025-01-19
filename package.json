@@ -1,15 +1,23 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "obsidian-new-filename",
 	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "Customize the default filename for new notes in Obsidian, with unique and date-based options.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json"
+		"build": "tsc --noEmit --skipLibCheck && node esbuild.config.mjs production",
+		"version": "node version-bump.mjs && git add manifest.json versions.json",
+		"clean": "rm -rf build"
 	},
-	"keywords": [],
-	"author": "",
+	"keywords": [
+		"obsidian",
+		"plugin",
+		"filename",
+		"notes",
+		"productivity",
+		"markdown"
+	],
+	"author": "Carlos Gabriel Godri",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",
@@ -22,6 +30,5 @@
 		"typescript": "4.7.4"
 	},
 	"dependencies": {
-		"uuid": "^11.0.3"
 	}
 }
