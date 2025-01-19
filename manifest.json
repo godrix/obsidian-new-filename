@@ -5,6 +5,6 @@
 	"minAppVersion": "0.15.0",
 	"description": "Customize the default filename for new notes, with unique and date-based options.",
 	"author": "Carlos Gabriel Godri",
-	"authorUrl": "https://github.com/godrix/obsidian-new-filename",
+	"authorUrl": "https://godri.dev",
 	"isDesktopOnly": false
 }
